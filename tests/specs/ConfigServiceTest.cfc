@@ -82,7 +82,29 @@ component extends="tests.BaseTest" appMapping="/tests" {
 				 );
 				expect( fileRead( expandPath( '/tests/resources/tmp/AdobeConfig.json' ) ) ).toBeJSON();
 			});
-			
+
+			it( "can export config from Adobe@9 to JSON", function() {
+				configService.transfer(
+					from		= '/tests/resources/Adobe9/ServerHome/WEB-INF/cfusion',
+					to			= '/tests/resources/tmp/AdobeConfig.json',
+					fromFormat	= 'adobe',
+					toFormat	= 'JSON',
+					fromVersion	= '9'
+				 );
+				expect( fileRead( expandPath( '/tests/resources/tmp/AdobeConfig.json' ) ) ).toBeJSON();
+			});
+
+			it( "can export config from Adobe@10 to JSON", function() {
+				configService.transfer(
+					from		= '/tests/resources/Adobe10/ServerHome/WEB-INF/cfusion',
+					to			= '/tests/resources/tmp/AdobeConfig.json',
+					fromFormat	= 'adobe',
+					toFormat	= 'JSON',
+					fromVersion	= '10'
+				 );
+				expect( fileRead( expandPath( '/tests/resources/tmp/AdobeConfig.json' ) ) ).toBeJSON();
+			});
+
 			it( "can import config from JSON to Lucee Server", function() {
 				configService.transfer(
 					from		= '/tests/resources/.CFConfig.json',
@@ -100,6 +122,28 @@ component extends="tests.BaseTest" appMapping="/tests" {
 					fromFormat	= 'JSON',
 					toFormat	= 'adobe',
 					toVersion	= '11'
+				 );
+				expect( fileRead( expandPath( '/tests/resources/tmp/AdobeConfig.json' ) ) ).toBeJSON();
+			});
+			
+			it( "can export config from JSON to Adobe@9", function() {
+				configService.transfer(
+					from		= '/tests/resources/.CFConfig.json',
+					to			= '/tests/resources/tmp/adobe',
+					fromFormat	= 'JSON',
+					toFormat	= 'adobe',
+					toVersion	= '9'
+				 );
+				expect( fileRead( expandPath( '/tests/resources/tmp/AdobeConfig.json' ) ) ).toBeJSON();
+			});
+			
+			it( "can export config from JSON to Adobe@10", function() {
+				configService.transfer(
+					from		= '/tests/resources/.CFConfig.json',
+					to			= '/tests/resources/tmp/adobe',
+					fromFormat	= 'JSON',
+					toFormat	= 'adobe',
+					toVersion	= '10'
 				 );
 				expect( fileRead( expandPath( '/tests/resources/tmp/AdobeConfig.json' ) ) ).toBeJSON();
 			});
@@ -123,6 +167,27 @@ component extends="tests.BaseTest" appMapping="/tests" {
 					toVersion	= '4'
 				 );
 			});
+
+			
+			it( "can transer config from adobe@9 to Lucee", function() {
+				
+				configService.transfer(
+					from		= '/tests/resources/.CFConfig.json',
+					to			= '/tests/resources/tmp/adobe',
+					fromFormat	= 'JSON',
+					toFormat	= 'adobe',
+					toVersion	= '9'
+				 );
+				
+				configService.transfer(
+					from		= '/tests/resources/tmp/adobe',
+					to			= '/tests/resources/tmp/lucee2',
+					fromFormat	= 'adobe',
+					toFormat	= 'luceeServer',
+					fromVersion	= '9',
+					toVersion	= '4'
+				 );
+			});
 			
 			it( "can transer config from Lucee to adobe ", function() {
 				
@@ -141,6 +206,26 @@ component extends="tests.BaseTest" appMapping="/tests" {
 					toFormat	= 'adobe',
 					fromVersion	= '4',
 					toVersion	= '11'
+				 );
+			});
+			
+			it( "can transer config from Lucee to adobe@9 ", function() {
+				
+				configService.transfer(
+					from		= '/tests/resources/.CFConfig.json',
+					to			= '/tests/resources/tmp/lucee',
+					fromFormat	= 'JSON',
+					toFormat	= 'luceeServer',
+					toVersion	= '4'
+				 );
+				
+				configService.transfer(
+					from		= '/tests/resources/tmp/lucee',
+					to			= '/tests/resources/tmp/adobe2',
+					fromFormat	= 'luceeServer',
+					toFormat	= 'adobe',
+					fromVersion	= '4',
+					toVersion	= '9'
 				 );
 			});
 		
@@ -181,6 +266,16 @@ component extends="tests.BaseTest" appMapping="/tests" {
 			it( "can recognize an Adobe server", function() {
 				var results = configService.guessFormat( '/tests/resources/Adobe11/ServerHome/WEB-INF/cfusion' );
 				expect( results.format ).toBe( 'adobe' );
+			});
+			
+			it( "can recognize Adobe 9", function() {
+				var results = configService.guessFormat( '/tests/resources/Adobe9/ServerHome/WEB-INF/cfusion' );
+				expect( results.version ).toBe( '9' );
+			});
+			
+			it( "can recognize Adobe 10", function() {
+				var results = configService.guessFormat( '/tests/resources/Adobe10/ServerHome/WEB-INF/cfusion' );
+				expect( results.version ).toBe( '10' );
 			});
 			
 			it( "can recognize Adobe 11", function() {

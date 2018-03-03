@@ -24,7 +24,7 @@ component accessors=true singleton {
 	*/
 	function buildProviderRegistry( string providerDirectory ) {
 		var providerRegistry = getProviderRegistry();
-		
+
 		for( var thisFile in directoryList( path=providerDirectory, filter='*.cfc' ) ) {
 			registerProvider( providerDirectory.listChangeDelims( '.', '/\' ) & '.' & thisFile.listLast( '/\' ).listFirst( '.' ) );
 		}
@@ -105,6 +105,12 @@ component accessors=true singleton {
 					}
 				} else {
 					// Potential backup approaches here if the file above doesn't exist.
+					// we are dealing with either version 9 or 10 at this point because they don't have the '/bin/cf-init.sh' file
+					if( fileExists(CFHomePath & '/bin/cf-init-run.sh')){
+						result.version = '10';
+					}else{
+						result.version = '9';
+					}
 				}
 				
 				return result;
